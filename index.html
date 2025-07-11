@@ -1,35 +1,315 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<style>
-  body { margin:0; font-family: Arial, sans-serif; }
-  .banner{width:100%;background:linear-gradient(135deg,#0f5132,#14532d);
-    border-radius:12px;padding:20px;box-sizing:border-box;color:white;}
-  .header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;}
-  .title{font-size:1.5rem;font-weight:bold;}
-  .date{background:rgba(255,255,255,0.2);padding:6px 12px;border-radius:20px;font-size:0.85rem;}
-  .text{margin-top:10px;font-size:1rem;}
-  .btn{margin-top:15px;}
-  .btn a{padding:10px 20px;border:2px solid white;border-radius:30px;color:white;
-    text-decoration:none;font-weight:500;transition:background 0.3s;}
-  .btn a:hover{background:rgba(255,255,255,0.2);}
-  @media(max-width:600px){
-    .title{font-size:1.2rem;}
-    .text{font-size:0.95rem;}
-    .btn a{font-size:0.9rem;padding:8px 16px;}
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner Reflexão</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .banner-wrapper {
+            width: 100%;
+            height: 100%;
+            min-height: 200px;
+            position: relative;
+        }
+
+        .banner-container {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e6b52 0%, #155a47 50%, #0f3d32 100%);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(30, 107, 82, 0.3);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .banner-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(30, 107, 82, 0.4);
+        }
+
+        .banner-content {
+            flex: 1;
+            padding: 20px;
+            color: white;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .banner-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .banner-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            flex: 1;
+        }
+
+        .date-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+            margin-left: 10px;
+        }
+
+        .banner-preview {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            opacity: 0.95;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            flex: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .loading-text {
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .cta-button {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+            align-self: flex-start;
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .banner-decoration {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 30%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.05) 100%);
+            clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 0% 100%);
+            z-index: 1;
+        }
+
+        /* Responsividade - Similar ao iframe */
+        @media (max-width: 768px) {
+            .banner-title {
+                font-size: 1.4rem;
+            }
+            
+            .banner-preview {
+                font-size: 0.9rem;
+                -webkit-line-clamp: 2;
+            }
+            
+            .date-badge {
+                font-size: 0.7rem;
+                padding: 4px 8px;
+            }
+            
+            .cta-button {
+                font-size: 0.8rem;
+                padding: 8px 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .banner-content {
+                padding: 15px;
+            }
+            
+            .banner-title {
+                font-size: 1.2rem;
+            }
+            
+            .banner-preview {
+                font-size: 0.85rem;
+                line-height: 1.4;
+            }
+            
+            .date-badge {
+                font-size: 0.65rem;
+                padding: 3px 6px;
+            }
+            
+            .cta-button {
+                font-size: 0.75rem;
+                padding: 6px 12px;
+            }
+            
+            .banner-decoration {
+                width: 25%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="banner">
-    <div class="header">
-      <div class="title">Reflexão Diária</div>
-      <div class="date">11 de jul.</div>
+    <div class="banner-wrapper">
+        <div class="banner-container" onclick="redirectToReflexao()">
+            <div class="banner-decoration"></div>
+            
+            <div class="banner-content">
+                <div class="banner-header">
+                    <div class="banner-title">Reflexão Diária</div>
+                    <div class="date-badge" id="currentDate"></div>
+                </div>
+                
+                <div class="banner-preview" id="reflexaoPreview">
+                    <span class="loading-text">Carregando reflexão do dia...</span>
+                </div>
+                
+                <button class="cta-button">Continuar Lendo →</button>
+            </div>
+        </div>
     </div>
-    <div class="text">A verdadeira sabedoria está em reconhecer a própria ignorância...</div>
-    <div class="btn"><a href="#">Continuar Lendo →</a></div>
-  </div>
+
+    <script>
+        // Função para formatar a data atual
+        function formatCurrentDate() {
+            const today = new Date();
+            const options = { 
+                day: 'numeric',
+                month: 'short'
+            };
+            return today.toLocaleDateString('pt-BR', options);
+        }
+
+        // Função para redirecionar para a página de reflexão
+        function redirectToReflexao() {
+            window.open('https://www.3ipa.com.br/v3-0/reflexão', '_blank');
+        }
+
+        // Função para buscar conteúdo da página usando proxy CORS
+        async function fetchReflexaoContent() {
+            const reflexaoPreview = document.getElementById('reflexaoPreview');
+            
+            try {
+                // Método 1: Usando proxy CORS público
+                const proxyUrl = 'https://api.allorigins.win/get?url=';
+                const targetUrl = encodeURIComponent('https://www.3ipa.com.br/v3-0/reflexão');
+                const response = await fetch(proxyUrl + targetUrl);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const htmlContent = data.contents;
+                    
+                    // Parse do HTML para extrair o conteúdo
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+                    
+                    // Tenta encontrar o conteúdo principal da reflexão
+                    let reflexaoText = '';
+                    
+                    // Procura por diferentes seletores possíveis
+                    const selectors = [
+                        'main p',
+                        '.content p',
+                        'article p',
+                        '.post-content p',
+                        '.reflexao p',
+                        'p'
+                    ];
+                    
+                    for (const selector of selectors) {
+                        const elements = doc.querySelectorAll(selector);
+                        if (elements.length > 0) {
+                            for (const element of elements) {
+                                const text = element.textContent.trim();
+                                if (text.length > 50) { // Considera apenas parágrafos com conteúdo substancial
+                                    reflexaoText = text;
+                                    break;
+                                }
+                            }
+                            if (reflexaoText) break;
+                        }
+                    }
+                    
+                    if (reflexaoText) {
+                        // Limita o texto para o preview
+                        const previewText = reflexaoText.length > 150 ? 
+                            reflexaoText.substring(0, 150) + '...' : 
+                            reflexaoText;
+                        reflexaoPreview.innerHTML = previewText;
+                    } else {
+                        throw new Error('Conteúdo não encontrado');
+                    }
+                    
+                } else {
+                    throw new Error('Erro ao carregar página');
+                }
+                
+            } catch (error) {
+                console.log('Usando conteúdo alternativo...', error);
+                
+                // Método 2: Fallback com textos rotativos baseados na data
+                const reflexaoTextos = [
+                    "A verdadeira sabedoria está em reconhecer a própria ignorância. Cada dia é uma oportunidade de aprender algo novo e expandir nossos horizontes...",
+                    "A paciência é uma virtude que se desenvolve com o tempo. Quando aprendemos a esperar o momento certo, descobrimos o valor da serenidade...",
+                    "A gratidão transforma o que temos em suficiente. Ao reconhecermos as bênçãos em nossa vida, multiplicamos nossa felicidade...",
+                    "O perdão é um presente que damos a nós mesmos. Quando liberamos o ressentimento, abrimos espaço para a paz interior...",
+                    "A compaixão é a linguagem universal do coração. Quando nos colocamos no lugar do outro, construímos pontes de entendimento...",
+                    "A humildade nos ensina que sempre há algo a aprender. Cada pessoa que encontramos tem algo valioso a nos oferecer...",
+                    "A perseverança é a chave para superar os obstáculos. Quando não desistimos diante das dificuldades, descobrimos nossa força interior...",
+                    "O momento presente é o único que realmente possuímos. Viver com consciência plena nos permite experimentar a vida em sua totalidade..."
+                ];
+                
+                // Seleciona um texto baseado no dia atual
+                const today = new Date();
+                const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+                const selectedText = reflexaoTextos[dayOfYear % reflexaoTextos.length];
+                
+                reflexaoPreview.innerHTML = selectedText;
+            }
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Definir data atual
+            document.getElementById('currentDate').textContent = formatCurrentDate();
+            
+            // Carregar conteúdo da reflexão
+            fetchReflexaoContent();
+        });
+
+        // Atualizar conteúdo a cada hora (opcional)
+        setInterval(fetchReflexaoContent, 3600000); // 1 hora = 3600000ms
+    </script>
 </body>
 </html>
